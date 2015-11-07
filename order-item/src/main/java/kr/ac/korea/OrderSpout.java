@@ -13,7 +13,7 @@ import java.util.Map;
 public class OrderSpout implements ITridentSpout<Long>{
     private static final long serialVersionUID = 1L;
     SpoutOutputCollector collector;
-    BatchCoordinator<Long> coordinator = new OrderItemCoordinator();
+    BatchCoordinator<Long> coordinator = new OrderCoordinator();
     Emitter<Long> emitter = new OrderEmitter();
 
     @Override

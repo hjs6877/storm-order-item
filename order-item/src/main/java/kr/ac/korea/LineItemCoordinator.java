@@ -1,7 +1,7 @@
 package kr.ac.korea;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import storm.trident.spout.ITridentSpout;
 
 import java.io.Serializable;
@@ -9,9 +9,9 @@ import java.io.Serializable;
 /**
  * Created by ideapad on 2015-11-05.
  */
-public class OrderItemCoordinator implements ITridentSpout.BatchCoordinator<Long>, Serializable {
+public class LineItemCoordinator implements ITridentSpout.BatchCoordinator<Long>, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger LOG = LoggerFactory.getLogger(OrderItemCoordinator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LineItemCoordinator.class);
     public Long initializeTransaction(long txId, Long aLong, Long x1) {
         LOG.info("Initializing Transaction [" + txId + "]");
         return null;

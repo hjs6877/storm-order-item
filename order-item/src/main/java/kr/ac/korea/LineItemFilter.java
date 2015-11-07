@@ -20,10 +20,10 @@ public class LineItemFilter extends BaseFilter {
         double orderKey = lineItem.getOrderKey();
 
         if (extendedPrice <= 10000.0 && discount >= 0.05) {
-            LOG.debug("Emitting lineItem [" + orderKey + "]");
+            LOG.info("Emitting lineItem [" + orderKey + "]");
             return true;
         } else {
-            LOG.debug("Filtering disease [" + orderKey + "]");
+            LOG.info("Filtering lineItem [" + orderKey + "]");
             return false;
         }
     }
