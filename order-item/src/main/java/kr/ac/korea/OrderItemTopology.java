@@ -25,11 +25,12 @@ public class OrderItemTopology {
         OrderSpout orderSpout = new OrderSpout();
         Stream orderInputStream = topology.newStream("order", orderSpout);
 
-//        topology.join(orderInputStream, new Fields("orderKey"), lineItemInputStream, new Fields("orderKey"),
-//                new Fields("orderKey","orderDate","orderPriority","extendedPrice", "discount"))
-//                .each(new Fields("lineItem"), new LineItemFilter());
-        lineItemInputStream.each(new Fields("lineItem"), new LineItemFilter());
-        orderInputStream.each(new Fields("order"), new OrderItemJoinFunction(), new Fields());
+        Stream filteredLineItemStream = lineItemInputStream.each(new Fields("itemOrderKey", "extendedPrice", "discount"), new LineItemFilter());
+
+        topology.join(orderInputStream, new Fields("orderKey"), filteredLineItemStream, new Fields("itemOrderKey"),
+                new Fields("orderKey","orderDate", "orderPriority", "extendedPrice", "discount"))
+                .each(new Fields(), new TupleCreateTimeFunction(),new Fields("createDate"))             // 조인된 튜플 생성 시간 추가.
+                .each(new Fields("orderKey","orderDate", "orderPriority", "extendedPrice", "discount", "createDate"), new OrderItemReportFunction(), new Fields());
 
         return topology.build();
     }

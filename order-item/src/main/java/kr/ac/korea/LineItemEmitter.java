@@ -1,5 +1,6 @@
 package kr.ac.korea;
 
+import backtype.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.trident.operation.TridentCollector;
@@ -38,20 +39,15 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
                 if(line == null){
                     br.reset();
                 }else {
-//                    logger.info("#### input sentence:: " + line);
-                    List<Object> lineItemList = new ArrayList<Object>();
 
                     String[] lineItemField = line.split("\\|");
-//                    logger.info("lineItemField[0]::::" + lineItemField[0]);
-//                    logger.info("lineItemField[5]::::" + lineItemField[5]);
-//                    logger.info("lineItemField[6]::::" + lineItemField[6]);
-                    long orderKey = Long.parseLong(lineItemField[0]);
+
+                    long itemOrderKey = Long.parseLong(lineItemField[0]);
                     double extendedPrice = Double.parseDouble(lineItemField[5]);
                     double discount = Double.parseDouble(lineItemField[6]);
 
-                    LineItem lineItem = new LineItem(orderKey, extendedPrice, discount);
-                    lineItemList.add(lineItem);
-                    collector.emit(lineItemList);
+
+                    collector.emit(new Values(itemOrderKey, extendedPrice, discount));
                 }
             }
         } catch (FileNotFoundException e) {
@@ -67,15 +63,6 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
                 e.printStackTrace();
             }
 
-        }
-
-
-        for(int i = 0; i < 10000; i++){
-            List<Object> lineItemList = new ArrayList<Object>();
-
-            LineItem lineItem = new LineItem(1, 15000.0, 0.04);
-            lineItemList.add(lineItem);
-            collector.emit(lineItemList);
         }
     }
 

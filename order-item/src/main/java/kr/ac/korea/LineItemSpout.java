@@ -33,6 +33,6 @@ public class LineItemSpout implements ITridentSpout<Long> {
 
     @Override
     public Fields getOutputFields() {
-        return new Fields("lineItem");
+        return new Fields("itemOrderKey", "extendedPrice", "discount");
     }
 }

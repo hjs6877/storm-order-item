@@ -1,5 +1,6 @@
 package kr.ac.korea;
 
+import backtype.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.trident.operation.TridentCollector;
@@ -7,7 +8,9 @@ import storm.trident.spout.ITridentSpout;
 import storm.trident.topology.TransactionAttempt;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,20 +42,14 @@ public class OrderEmitter implements ITridentSpout.Emitter<Long>, Serializable {
                 if(line == null){
                     br.reset();
                 }else {
-//                    logger.info("#### input sentence:: " + line);
-                    List<Object> orderList = new ArrayList<Object>();
 
                     String[] orderField = line.split("\\|");
-//                    logger.info("lineItemField[0]::::" + lineItemField[0]);
-//                    logger.info("lineItemField[5]::::" + lineItemField[5]);
-//                    logger.info("lineItemField[6]::::" + lineItemField[6]);
+
                     long orderKey = Long.parseLong(orderField[0]);
                     String orderDate = orderField[4];
                     String orderPriority = orderField[5];
 
-                    Order order = new Order(orderKey, orderDate, orderPriority);
-                    orderList.add(order);
-                    collector.emit(orderList);
+                    collector.emit(new Values(orderKey, orderDate, orderPriority));
                 }
             }
         } catch (FileNotFoundException e) {

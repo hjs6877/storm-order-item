@@ -33,6 +33,6 @@ public class OrderSpout implements ITridentSpout<Long>{
 
     @Override
     public Fields getOutputFields() {
-        return new Fields("order");
+        return new Fields("orderKey", "orderDate", "orderPriority");
     }
 }
