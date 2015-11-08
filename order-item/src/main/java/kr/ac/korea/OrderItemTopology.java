@@ -18,10 +18,18 @@ import storm.trident.TridentTopology;
 public class OrderItemTopology {
     public static StormTopology buildTopology() {
         TridentTopology topology = new TridentTopology();
-        LineItemSpout spout = new LineItemSpout();
-        Stream inputStream = topology.newStream("lineItem", spout);
 
-        inputStream.each(new Fields("lineItem"), new LineItemFilter());
+        LineItemSpout lineItemSpout = new LineItemSpout();
+        Stream lineItemInputStream = topology.newStream("lineItem", lineItemSpout);
+
+        OrderSpout orderSpout = new OrderSpout();
+        Stream orderInputStream = topology.newStream("order", orderSpout);
+
+//        topology.join(orderInputStream, new Fields("orderKey"), lineItemInputStream, new Fields("orderKey"),
+//                new Fields("orderKey","orderDate","orderPriority","extendedPrice", "discount"))
+//                .each(new Fields("lineItem"), new LineItemFilter());
+        lineItemInputStream.each(new Fields("lineItem"), new LineItemFilter());
+        orderInputStream.each(new Fields("order"), new OrderItemJoinFunction(), new Fields());
 
         return topology.build();
     }

@@ -25,7 +25,7 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
          * LineItem 데이터를 파일에서 읽어와서 계속 내보낸다.
          */
         try {
-            reader =   new FileReader("D:\\7_project\\1_private\\2_korea\\data\\lineitem.smaill.tbl");
+            reader =   new FileReader("D:\\7_project\\1_private\\2_korea\\data\\lineitem.small.tbl");
             br = new BufferedReader(reader);
 
             String line = "";
@@ -38,10 +38,18 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
                 if(line == null){
                     br.reset();
                 }else {
-                    logger.info("#### input sentence:: " + line);
+//                    logger.info("#### input sentence:: " + line);
                     List<Object> lineItemList = new ArrayList<Object>();
 
-                    LineItem lineItem = new LineItem(1, 15000.0, 0.04);
+                    String[] lineItemField = line.split("\\|");
+//                    logger.info("lineItemField[0]::::" + lineItemField[0]);
+//                    logger.info("lineItemField[5]::::" + lineItemField[5]);
+//                    logger.info("lineItemField[6]::::" + lineItemField[6]);
+                    long orderKey = Long.parseLong(lineItemField[0]);
+                    double extendedPrice = Double.parseDouble(lineItemField[5]);
+                    double discount = Double.parseDouble(lineItemField[6]);
+
+                    LineItem lineItem = new LineItem(orderKey, extendedPrice, discount);
                     lineItemList.add(lineItem);
                     collector.emit(lineItemList);
                 }
