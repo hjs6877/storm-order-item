@@ -8,10 +8,6 @@ import storm.trident.spout.ITridentSpout;
 import storm.trident.topology.TransactionAttempt;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,7 +25,7 @@ public class OrderEmitter implements ITridentSpout.Emitter<Long>, Serializable {
          * Order 데이터를 파일에서 읽어와서 계속 내보낸다.
          */
         try {
-            reader =   new FileReader("D:\\7_project\\1_private\\2_korea\\data\\orders.small.tbl");
+            reader =   new FileReader("F:\\3_private_project\\1_project\\2_korea\\3_sample_data\\orders.small.tbl");
             br = new BufferedReader(reader);
 
             String line = "";

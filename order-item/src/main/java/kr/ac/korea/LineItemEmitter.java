@@ -8,9 +8,7 @@ import storm.trident.spout.ITridentSpout;
 import storm.trident.topology.TransactionAttempt;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.List;
 /**
  * Created by ideapad on 2015-11-05.
  */
@@ -26,7 +24,7 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
          * LineItem 데이터를 파일에서 읽어와서 계속 내보낸다.
          */
         try {
-            reader =   new FileReader("D:\\7_project\\1_private\\2_korea\\data\\lineitem.small.tbl");
+            reader =   new FileReader("F:\\3_private_project\\1_project\\2_korea\\3_sample_data\\lineitem.small.tbl");
             br = new BufferedReader(reader);
 
             String line = "";

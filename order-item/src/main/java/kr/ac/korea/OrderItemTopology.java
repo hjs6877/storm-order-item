@@ -8,12 +8,12 @@ import storm.trident.Stream;
 import storm.trident.TridentTopology;
 
 /**
- * 1. LineItemEmitter에서 LineItem 데이터를 LineItemFilter로 내보낸다.
- *      1.1. LineItemFilter에서 필터링 된 LineItem 데이터를 JoinFunction으로 내보낸다.
- * 2. OrderEmitter에서 Order 데이터를 JoinFunction으로 내보낸다.
- * 3. JoinFunction에서 Order와 LineItem을 Join하여 xxxFunction으로 내보낸다.
- * 4. xxxFunction에서 들어온 Order-LineItem Join 데이터를 맵에 저장한다.
- * 5. 데이터를 출력한다.
+ * 1.LineItem의 해당 조건에 맞는 튜플을 먼저 필터링 한다.
+ * 2. 필터링 된 LineItem 튜플과 Order 튜플을 조인한다.
+ * 3. 튜플 생성 시간 필드를 추가한다.
+ * 4. 필요한 Filed만 projection 한다.
+ * 4. 상태 저장 관련
+ * 5. 최근 1분 이내의 튜플의 정보를 출력한다.
  */
 public class OrderItemTopology {
     public static StormTopology buildTopology() {
@@ -30,7 +30,9 @@ public class OrderItemTopology {
         topology.join(orderInputStream, new Fields("orderKey"), filteredLineItemStream, new Fields("itemOrderKey"),
                 new Fields("orderKey","orderDate", "orderPriority", "extendedPrice", "discount"))
                 .each(new Fields(), new TupleCreateTimeFunction(),new Fields("createDate"))             // 조인된 튜플 생성 시간 추가.
-                .each(new Fields("orderKey","orderDate", "orderPriority", "extendedPrice", "discount", "createDate"), new OrderItemReportFunction(), new Fields());
+                .project(new Fields("orderDate", "orderPriority", "createDate"))                         // 필요한 필드만 projection 한다.
+                .each(new Fields("orderDate", "orderPriority", "createDate")
+                        , new OrderItemReportFunction(), new Fields());
 
         return topology.build();
     }
