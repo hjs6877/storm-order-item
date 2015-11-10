@@ -24,7 +24,7 @@ public class LineItemEmitter implements ITridentSpout.Emitter<Long>, Serializabl
          * LineItem 데이터를 파일에서 읽어와서 계속 내보낸다.
          */
         try {
-            reader =   new FileReader("F:\\3_private_project\\1_project\\2_korea\\3_sample_data\\lineitem.small.tbl");
+            reader =   new FileReader("F:\\3_private_project\\1_project\\2_korea\\3_sample_data\\data\\lineitem.tbl");
             br = new BufferedReader(reader);
 
             String line = "";

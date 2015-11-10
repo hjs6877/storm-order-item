@@ -26,5 +26,9 @@ public class OrderItemReportFunction extends BaseFunction {
 
         logger.info("Result order-lineItem {orderDate:" + orderDate + ", orderPriority:" +
                 orderPriority + ", , createDate: " + createDate + "}");
+
+        // TODO 튜플의 State 저장 및 최근 1분 이내 튜플을 제외한 튜플 삭제 작업
+
+        // TODO 최근 1분 이내 튜플 조회 및 출력 작업
     }
 }

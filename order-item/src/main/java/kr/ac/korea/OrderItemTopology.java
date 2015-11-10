@@ -41,7 +41,7 @@ public class OrderItemTopology {
         Config conf = new Config();
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("olTopology", conf, buildTopology());
-        Thread.sleep(20000);
+        Thread.sleep(10000);
         cluster.shutdown();
     }
 }
